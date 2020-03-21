@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import ChatBot from "react-simple-chatbot";
 import { MessageArgs } from './chatbot-types';
 import Editor from 'react-simple-code-editor';
 import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
+import { ChatBotState, useChatBotState } from './BotState';
 
-function Profile(props: {name?: string, age?: number, url?: string}) {
-  return <p style={{color: "white"}}>
-    <b>Name:</b> {props.name || "Unbekannt"} <br/>
-    <b>Alter:</b> {props.age || "Unbekannt"} <br/>
-    <b>Deine seite:</b> {props.url ? <a href={props.url}>link</a> : "Keine"} 
+function Profile(props: {state: ChatBotState}) {
+  return <p style={{color: "black"}}>
+    <b>Name:</b> {props.state.name || "Unbekannt"} <br/>
+    <b>Alter:</b> {props.state.age || "Unbekannt"} <br/>
+    <b>Deine seite:</b> {props.state.url ? <a href={props.state.url}>link</a> : "Keine"} 
   </p>
 }
 
 function App() {
-  const [name, setName] = useState<string | undefined>();
-  const [age, setAge] = useState<number | undefined>();
-  const [url, setURL] = useState<string | undefined>();
+  const [state, setState] = useChatBotState();
 
+  // display custom site if site argument passed to url
   const args = getUrlVars();
   if (args["site"]) {
     return <div
@@ -33,12 +33,18 @@ function App() {
       trigger: "select",
     },
     {
+      id: "profile",
+      component: <Profile state={state} />,
+      trigger: "start",
+    },
+    {
       id: "select",
       options: [
         { value: 1, label: 'Namen ändern', trigger: 'update-name' },
         { value: 2, label: 'Alter angeben', trigger: 'update-age' },
         { value: 3, label: 'Programmieren', trigger: 'code-start' },
         { value: 4, label: 'Website erstellen', trigger: 'create-website' },
+        { value: 5, label: 'Mein Profil', trigger: 'profile' },
       ],
     },
     {
@@ -54,7 +60,7 @@ function App() {
     {
       id: 'set-name',
       message: (args: MessageArgs) => {
-        setName(args.previousValue);
+        setState({...state, name: args.previousValue});
         return `Moin ${args.previousValue}!`
       } ,
       trigger: "start",
@@ -81,7 +87,7 @@ function App() {
     {
       id: 'set-age',
       message: (args: MessageArgs) => {
-        setAge(parseInt(args.previousValue));
+        setState({...state, age: parseInt(args.previousValue)});
         return `Du bist also ${parseInt(args.previousValue)}.`
       } ,
       trigger: "start",
@@ -126,10 +132,10 @@ function App() {
     {
       id: "finish-website",
       message: (args: MessageArgs) => {
-        setURL(createWebsiteURLWithData("site", args.previousValue));
+        setState({...state, url: createWebsiteURLWithData("site", args.previousValue)});
         return "Super! Deine Website ist jetzt im Link unten!";
       },
-      trigger: "start"
+      trigger: "profile"
     },
   ];
   
@@ -144,7 +150,6 @@ function App() {
         </p>
         <div>
           <ChatBot steps={steps} />
-          <Profile name={name} age={age} url={url} />
         </div>
         <div style={{flex: 1}}/>
       </div>
