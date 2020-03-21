@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { ProgrammingChatBot } from './ProgrammingChatbot';
+import { ProgrammingChatBot } from './Chat';
 import { getUrlVars } from './urlArgs';
 import { createStore } from 'redux';
 import { chatBotReducer } from './state';

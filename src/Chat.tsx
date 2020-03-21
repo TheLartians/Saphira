@@ -2,24 +2,9 @@ import React, { Dispatch } from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { MessageArgs } from './chatbot-types';
 import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ChatBotAction } from './state/action';
-import { ChatBotState } from './state';
-
-function Profile() {
-  // `() => false` is for keeping
-  const name = useSelector<ChatBotState>((state) => state.profile.name);
-  const age = useSelector<ChatBotState>((state) => state.profile.age);
-  const url = useSelector<ChatBotState>((state) => state.profile.url);
-
-  return (
-    <p style={{ color: 'black' }}>
-      <b>Name:</b> {name || 'Unbekannt'} <br />
-      <b>Alter:</b> {age || 'Unbekannt'} <br />
-      <b>Deine seite:</b> {url ? <a href={url as string}>link</a> : 'Keine'}
-    </p>
-  );
-}
+import { Profile } from './Profile';
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
@@ -170,7 +155,7 @@ export function ProgrammingChatBot() {
             fontSize: 25,
           }}
         >
-          Chatbot test
+          Code-Dragon
         </p>
         <div>
           <ChatBot steps={steps} />
