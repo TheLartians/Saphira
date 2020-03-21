@@ -3,6 +3,7 @@ import './App.css';
 import ChatBot from "react-simple-chatbot";
 import { MessageArgs } from './chatbot-types';
 import Editor from 'react-simple-code-editor';
+import { getUrlVars } from './urlArgs';
 
 function Profile(props: {name?: string, age?: number}) {
   return <p style={{color: "white"}}>
@@ -12,9 +13,16 @@ function Profile(props: {name?: string, age?: number}) {
 }
 
 function App() {
-
   const [name, setName] = useState<string | undefined>();
   const [age, setAge] = useState<number | undefined>();
+
+  const args = getUrlVars();
+  if (args["site"]) {
+    return <div
+    dangerouslySetInnerHTML={{
+      __html: decodeURI(args["site"])
+    }}></div>
+  }
 
   const steps = [
     {
