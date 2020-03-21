@@ -3,24 +3,26 @@ import './App.css';
 import ChatBot from "react-simple-chatbot";
 import { MessageArgs } from './chatbot-types';
 import Editor from 'react-simple-code-editor';
-import { getUrlVars } from './urlArgs';
+import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
 
-function Profile(props: {name?: string, age?: number}) {
+function Profile(props: {name?: string, age?: number, url?: string}) {
   return <p style={{color: "white"}}>
     <b>Name:</b> {props.name || "Unbekannt"} <br/>
-    <b>Alter:</b> {props.age || "Unbekannt"} 
+    <b>Alter:</b> {props.age || "Unbekannt"} <br/>
+    <b>Deine seite:</b> {props.url ? <a href={props.url}>link</a> : "Keine"} 
   </p>
 }
 
 function App() {
   const [name, setName] = useState<string | undefined>();
   const [age, setAge] = useState<number | undefined>();
+  const [url, setURL] = useState<string | undefined>();
 
   const args = getUrlVars();
   if (args["site"]) {
     return <div
     dangerouslySetInnerHTML={{
-      __html: decodeURI(args["site"])
+      __html: args["site"]
     }}></div>
   }
 
@@ -28,14 +30,15 @@ function App() {
     {
       id: "start",
       message: `Moin, was möchtest du machen?`,
-      trigger: "2",
+      trigger: "select",
     },
     {
-      id: "2",
+      id: "select",
       options: [
         { value: 1, label: 'Namen ändern', trigger: 'update-name' },
         { value: 2, label: 'Alter angeben', trigger: 'update-age' },
         { value: 3, label: 'Programmieren', trigger: 'code-start' },
+        { value: 4, label: 'Website erstellen', trigger: 'create-website' },
       ],
     },
     {
@@ -109,9 +112,29 @@ function App() {
       id: "finish-code",
       message: "Herzlichen Glückwunsch! Du bist jetzt ein Programmierer!",
       trigger: "start"
-    }
+    },
+    {
+      id: "create-website",
+      message: "Cool! Dann gib mal deinen HTML code ein.",
+      trigger: "enter-website"
+    },
+    {
+      id: 'enter-website',
+      trigger: "finish-website",
+      user: true,
+    },
+    {
+      id: "finish-website",
+      message: (args: MessageArgs) => {
+        setURL(createWebsiteURLWithData("site", args.previousValue));
+        return "Super! Deine Website jetzt unten!";
+      },
+      trigger: "start"
+    },
   ];
   
+// `Hier ist deine Website: ${createWebsiteURLWithData("site",args.previousValue)}`
+
   return (
     <div style={{backgroundColor: "gray", width: "100%", minHeight: "100vh", display: "flex", flexDirection: "column"}}>
       <div style={{display: "flex", flex: 1, flexDirection: "column", justifyContent: "center", alignSelf: "center"}}>
@@ -121,7 +144,7 @@ function App() {
         </p>
         <div>
           <ChatBot steps={steps} />
-          <Profile name={name} age={age} />
+          <Profile name={name} age={age} url={url} />
         </div>
         <div style={{flex: 1}}/>
       </div>
