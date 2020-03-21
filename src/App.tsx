@@ -59,9 +59,9 @@ function App() {
       validator: (input: string) => {
         const value = parseInt(input);
         if (isNaN(value)) {
-          return 'Das ist kein Alter!';
+          return 'Bitte gib eine Zahl ein.';
         } else if (value < 10 || value >= 100) {
-          return 'Glaub ich dir nicht.';
+          return `${value}? Komm schon.`;
         }
         return true;
       },
@@ -71,7 +71,7 @@ function App() {
       id: 'set-age',
       message: (args: MessageArgs) => {
         setAge(parseInt(args.previousValue));
-        return `Du bist also ${args.previousValue}.`
+        return `Du bist also ${parseInt(args.previousValue)}.`
       } ,
       trigger: "start",
     },
