@@ -9,7 +9,7 @@ function Profile(props: {name?: string, age?: number, url?: string}) {
   return <p style={{color: "white"}}>
     <b>Name:</b> {props.name || "Unbekannt"} <br/>
     <b>Alter:</b> {props.age || "Unbekannt"} <br/>
-    <b>Deine seite:</b> {props.url ? <a href={props.url}>link</a> : "Keine"} 
+    <b>Deine seite:</b> {props.url ? <a href={props.url}>{props.url}</a> : "Keine"} 
   </p>
 }
 
@@ -127,7 +127,7 @@ function App() {
       id: "finish-website",
       message: (args: MessageArgs) => {
         setURL(createWebsiteURLWithData("site", args.previousValue));
-        return "Super! Deine Website jetzt unten!";
+        return "Super! Deine Website ist jetzt im Link unten!";
       },
       trigger: "start"
     },
