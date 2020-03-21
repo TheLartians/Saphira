@@ -155,7 +155,7 @@ export function ProgrammingChatBot() {
             fontSize: 25,
           }}
         >
-          Code-Dragon
+          Saphira
         </p>
         <div>
           <ChatBot steps={steps} />
