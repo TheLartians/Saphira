@@ -14,8 +14,8 @@ export function ProgrammingChatBot() {
     function updateHeight() {
       setHeight(window.innerHeight);
     }
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);  
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
   });
 
   const steps = [
