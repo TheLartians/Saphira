@@ -1,9 +1,12 @@
-
 export function getUrlVars() {
-  var vars: {[key: string]: string} = {};
-  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-      vars[key] = decodeURI(value);
-      return "";
+  var vars: { [key: string]: string } = {};
+  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (
+    m,
+    key,
+    value
+  ) {
+    vars[key] = decodeURI(value);
+    return '';
   });
   return vars;
 }
