@@ -35,7 +35,7 @@ export function ProgrammingChatBot() {
     {
       id: 'start',
       message: 'Hej, ich bin Saphira 🐉 Wie heißt du? 🤗',
-      trigger: 'enter-website-welt-sagen',
+      trigger: 'enter-username',
     },
     {
       id: 'enter-username',
