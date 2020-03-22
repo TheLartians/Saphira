@@ -273,7 +273,7 @@ export function ProgrammingChatBot() {
     },
     {
       id: 'welt-sagen-nein',
-      message: `Ich habe auch mal eine Webseite gemacht, auf der ich meinen Eltern danke. Die haben sich sehr gefreut! Ein Freund hat auch mal eine Webseite über Fussball gemacht ⚽️`,
+      message: `Hier ein paar Ideen: Ich habe auch mal eine Webseite gemacht, auf der ich meinen Eltern danke. Die haben sich sehr gefreut! Ein Freund hat auch mal eine Webseite über Fussball gemacht ⚽️`,
       trigger: 'welt-sagen-ja',
       delay: 4000,
     },
@@ -385,7 +385,7 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
 
     {
       id: 'zuerst-machen',
-      message: `Was würdest du zuerst machen?`,
+      message: `Wenn du jetzt deine Homepage neu erstellst: Was würdest du zuerst machen?`,
       trigger: 'select-body-headline',
     },
 
@@ -441,6 +441,7 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
       id: 'enter-body-headline-headline-true',
       user: true,
       trigger: 'body-headline-close',
+      //TODO: code aktualisieren
     },
 
     {
@@ -460,7 +461,7 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
         {
           value: 2,
           label: '</h1>',
-          trigger: 'select-body-close-headline-true',
+          trigger: 'select-body-close-headline-true-weiter',
         },
       ],
     },
@@ -498,23 +499,23 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     },
     {
       id: 'select-body-close-headline-true',
-      /* Hier soll die letzte User-Eingabe mit übernommen werden */
+      /* TODO: Hier soll die letzte User-Eingabe mit übernommen werden */
       trigger: 'sieht-ziemlich-cool-aus',
       asMessage: true,
       component: <CodeBlock />,
-    },
+    }, //TODO: irgendwie steht hier nicht die user Eingabe drin. Auerßdem müssen wir hier das so parsen, dass die User-Eingabe zwischen dem Body und h1 tag steht
     {
       id: 'sieht-ziemlich-cool-aus',
       message: `Das ist doch schon mal ziemlich cool. 😎 Aber es ist schon ein bisschen langweilig, dass das alles in schwarz ist. `,
       trigger: 'gruene-ueberschrift',
-      delay: 2000,
+      delay: 3000,
     },
     {
       id: 'gruene-ueberschrift',
       message:
         'Meine Lieblingsfarbe ist ja grün. Deshalb will ich meine Überschrift in grün haben. 😍 Dafür muss ich bei der Überschrift sagen, dass sie grün sein soll. 🎨',
       trigger: 'gruene-ueberschrift-so',
-      delay: 2000,
+      delay: 3000,
     },
 
     {
@@ -525,9 +526,24 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
 
     {
       id: 'gruene-ueberschrift-code',
-      message: `<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>`,
-      trigger: 'gruene-ueberschrift-gesamt-code-ueberleitung',
-      code: true,
+      component: (
+        <CodeBlock
+          content={`<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>`}
+        />
+      ),
+      asMessage: true,
+      trigger: 'gruene-ueberschrift-verstanden',
+    },
+
+    {
+      id: 'gruene-ueberschrift-verstanden',
+      options: [
+        {
+          value: 1,
+          label: 'Weiter!',
+          trigger: 'gruene-ueberschrift-gesamt-code-ueberleitung',
+        },
+      ],
     },
 
     {
@@ -538,16 +554,25 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
 
     {
       id: 'gruene-ueberschrift-gesamt-code',
-      message: `<body><h1 style="color=green;">Das ist die Homepage von <Botname></h1></body>`,
+      component: (
+        <CodeBlock
+          content={`<CodeBlock content={<body><h1 style="color=green;">Mein Lieblingstier: Die Schildkröte<Botname></h1></body>}/>`}
+        />
+      ),
+      asMessage: true,
       trigger: 'andere-farben',
-      code: true,
     },
 
     {
       id: 'andere-farben',
       message:
         'Hinter color= kannst du verschiedene Farben auf Englisch eintragen. Vergiss das Istgleichzeichen nicht!',
-      trigger: 'fabe-definieren',
+      trigger: 'andere-farben-verstanden',
+    },
+
+    {
+      id: 'andere-farben-verstanden',
+      options: [{ value: 1, label: 'Verstanden!', trigger: 'fabe-definieren' }],
     },
 
     {
@@ -597,9 +622,9 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
         { value: 3, label: 'blau', trigger: 'farbige-ueberschrift-super' },
       ],
       /*
-       *hier dann die gewählte Farbe in den Code rein schreiben
-      außerdem sollte hier dann noch in den Code der Text aus der Überschrift rein von oben und alle closing tags
-      */
+       *TODO: hier dann die gewählte Farbe in den Code rein schreiben außerdem sollte hier dann noch in den Code der Text aus der Überschrift rein von oben und alle closing tags
+       * TODO: dann noch die homepage anzeigen?
+       */
     },
 
     {
@@ -625,14 +650,18 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     {
       id: 'inhalt-schildkroete',
       code: true,
-      message: `<body>
+      component: (
+        <CodeBlock
+          content={`<body>
 <h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>
 
 Es gibt auf der ganzen Welt derzeit 341 verscheidene Schildkrötenarten.
 Es gibt Landschildkrötenarten und kleine Wasserschildkröten und auch große
 Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
 
-</body>`,
+</body>`}
+        />
+      ),
       trigger: 'inhalt-selbst-schreiben',
     },
 
@@ -664,7 +693,7 @@ Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
       message: 'Schau gleich hier: ',
 
       /*
-       * hier muss dann noch der link eingefügt werden
+       * TODO hier muss dann noch der link eingefügt werden
        */
       end: true,
     },
