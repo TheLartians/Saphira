@@ -1,3 +1,6 @@
+[![Actions Status](https://github.com/TheLartians/Saphira/workflows/Check/badge.svg)](https://github.com/TheLartians/Saphira/actions)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
