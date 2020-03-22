@@ -546,7 +546,6 @@ export function ProgrammingChatBot() {
     },
     {
       id: 'select-body-close-true',
-      /* TODO: Hier soll die letzte User-Eingabe mit übernommen werden */
       trigger: 'sieht-ziemlich-cool-aus',
       component: <WebsitePreview />,
     },
