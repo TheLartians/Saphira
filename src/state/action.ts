@@ -10,4 +10,8 @@ export type ChatBotAction =
   | {
       type: 'setURL';
       value: string;
+    }
+  | {
+      type: 'setCode';
+      value: string;
     };

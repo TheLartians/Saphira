@@ -5,6 +5,7 @@ import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
 import { useDispatch } from 'react-redux';
 import { ChatBotAction } from './state/action';
 import { Profile } from './Profile';
+import { CodeBlock } from './CodeBlock';
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
@@ -37,6 +38,7 @@ export function ProgrammingChatBot() {
         { value: 3, label: 'Programmieren', trigger: 'code-start' },
         { value: 4, label: 'Website erstellen', trigger: 'create-website' },
         { value: 5, label: 'Mein Profil', trigger: 'profile' },
+        { value: 6, label: 'Code eingeben', trigger: 'update-code' },
       ],
     },
     {
@@ -132,6 +134,30 @@ export function ProgrammingChatBot() {
         });
         return 'Super! Deine Website ist jetzt im Link unten!';
       },
+      trigger: 'profile',
+    },
+    {
+      id: 'update-code',
+      message: 'Bitte schreibe etwas code',
+      trigger: 'enter-code',
+    },
+    {
+      id: 'enter-code',
+      user: true,
+      trigger: 'set-code',
+    },
+    {
+      id: 'set-code',
+      message: (args: MessageArgs) => {
+        dispatch({ type: 'setCode', value: args.previousValue });
+        return `Code saved!`;
+      },
+      trigger: 'show-code-block',
+    },
+    {
+      id: 'show-code-block',
+      asMessage: true,
+      component: <CodeBlock content={`<tag>`} />,
       trigger: 'profile',
     },
   ];
