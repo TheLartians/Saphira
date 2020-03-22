@@ -12,6 +12,6 @@ export type ChatBotAction =
       value: string;
     }
   | {
-      type: 'setCode';
+      type: 'setBody' | 'setTitle' | 'setTitleColor';
       value: string;
     };
