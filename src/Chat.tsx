@@ -1,18 +1,18 @@
 import React, { Dispatch, useState } from 'react';
 import ChatBot from 'react-simple-chatbot';
-import { MessageArgs } from './chatbot-types';
-import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
+import { MessageArgs, TriggerArgs } from './chatbot-types';
+import { createWebsiteURLWithData } from './urlArgs';
 import { useDispatch } from 'react-redux';
 import { ChatBotAction } from './state/action';
 import { Profile } from './Profile';
 import { CodeBlock } from './CodeBlock';
+import { getXMLErrors } from './getXMLErrors';
 
 type TriggerProps = { value: string; steps?: any };
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
   const [height, setHeight] = useState(window.innerHeight);
-
   React.useEffect(() => {
     function updateHeight() {
       setHeight(window.innerHeight);

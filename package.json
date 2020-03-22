@@ -32,7 +32,8 @@
     "publish:github": "yarn run build && gh-pages -d build",
     "prettier:base": "prettier --parser typescript --single-quote",
     "check:style": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
-    "fix:style": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\""
+    "fix:style": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\"",
+    "check:ts": "tsc -p . --noEmit --skipLibCheck"
   },
   "eslintConfig": {
     "extends": "react-app"

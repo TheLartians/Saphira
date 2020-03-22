@@ -7,7 +7,10 @@ import { ChatBotState } from './state';
  * in the redux store
  */
 export const CodeBlock = (props: { content?: string }) => {
-  const code = useSelector<ChatBotState>((state: ChatBotState) => state.code);
+  const savedCode = useSelector<ChatBotState>(
+    (state: ChatBotState) => state.code
+  );
+  const code = props.content || savedCode;
 
   return (
     <div
@@ -21,7 +24,7 @@ export const CodeBlock = (props: { content?: string }) => {
       }}
     >
       <HeaderBar />
-      {props.content ? props.content : code || `<NO CODE>`}
+      {code || `<NO CODE>`}
     </div>
   );
 };
