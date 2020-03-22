@@ -1,8 +1,8 @@
 import { ChatBotAction } from './action';
 
 const defaultState = {
-  body: 'body' as undefined | string,
-  title: 'title' as undefined | string,
+  body: undefined as undefined | string,
+  title: undefined as undefined | string,
   titleColor: undefined as undefined | string,
 };
 
