@@ -31,7 +31,6 @@ export function ProgrammingChatBot() {
     return () => window.removeEventListener('resize', updateHeight);
   });
 
-
   const steps = [
     {
       id: 'start',
@@ -87,7 +86,7 @@ export function ProgrammingChatBot() {
       options: [
         {
           value: 1,
-          label: 'Los geht\'s!',
+          label: "Los geht's!",
           trigger: 'explain-language-basic',
         },
       ],
@@ -144,7 +143,6 @@ export function ProgrammingChatBot() {
         },
       ],
     },
-
 
     {
       id: 'ask-tag-input',
