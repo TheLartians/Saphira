@@ -816,6 +816,20 @@ export function ProgrammingChatBot() {
     return <ChatBot width="100%" steps={steps} floating={true} opened={true} />;
   }
 
+  const header = (
+    <div
+      style={{
+        backgroundColor: '#2463b3',
+        padding: 14,
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
+      }}
+    >
+      Saphira
+    </div>
+  );
+
   return (
     <div
       style={{
@@ -836,18 +850,14 @@ export function ProgrammingChatBot() {
         }}
       >
         <div style={{ flex: 1 }} />
-        <p
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            color: 'white',
-            fontSize: 25,
-          }}
-        >
-          Saphira
-        </p>
         <div>
-          <ChatBot steps={steps} />
+          <ChatBot
+            headerTitle="Saphira"
+            botAvatar={require('./avatar.png')}
+            steps={steps}
+            bubbleStyle={{ backgroundColor: '#5d9be8' }}
+            headerComponent={header}
+          />
         </div>
         <div style={{ flex: 1 }} />
       </div>
