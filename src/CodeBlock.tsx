@@ -7,7 +7,9 @@ import { ChatBotState } from './state';
  * in the redux store
  */
 export const CodeBlock = (props: { content?: string }) => {
-  const savedCode = useSelector<ChatBotState>((state: ChatBotState) => state.code);
+  const savedCode = useSelector<ChatBotState>(
+    (state: ChatBotState) => state.code
+  );
   const code = props.content || savedCode;
 
   return (

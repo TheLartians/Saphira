@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { ChatBotAction } from './state/action';
 import { Profile } from './Profile';
 import { CodeBlock } from './CodeBlock';
-import { getXMLErrors } from "./getXMLErrors"
+import { getXMLErrors } from './getXMLErrors';
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
@@ -155,16 +155,16 @@ export function ProgrammingChatBot() {
     },
     {
       id: 'show-code-errors',
-      message: "Da ist wohl was schief gegangen:",
-      trigger: 'present-code-errors'
+      message: 'Da ist wohl was schief gegangen:',
+      trigger: 'present-code-errors',
     },
     {
       id: 'present-code-errors',
       component: React.createElement((args: MessageArgs) => {
         const errors = getXMLErrors(args.previousValue);
-        return <div>{errors}</div>
+        return <div>{errors}</div>;
       }),
-      trigger: 'update-code'
+      trigger: 'update-code',
     },
     {
       id: 'set-code',
