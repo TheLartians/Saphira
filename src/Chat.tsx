@@ -601,7 +601,7 @@ export function ProgrammingChatBot() {
       id: 'gruene-ueberschrift-gesamt-code',
       component: (
         <CodeBlock
-          content={`<body><h1 style="color=green;">Mein Lieblingstier: Die Schildkröte<Botname></h1></body>`}
+          content={`<body><h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1></body>`}
         />
       ),
       asMessage: true,
@@ -687,10 +687,6 @@ export function ProgrammingChatBot() {
           },
         },
       ],
-      /*
-       *TODO: hier dann die gewählte Farbe in den Code rein schreiben außerdem sollte hier dann noch in den Code der Text aus der Überschrift rein von oben und alle closing tags
-       * TODO: dann noch die homepage anzeigen?
-       */
     },
 
     {
