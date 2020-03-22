@@ -2,13 +2,23 @@ import React, { Dispatch, useState } from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { MessageArgs, TriggerArgs } from './chatbot-types';
 import { createWebsiteURLWithData } from './urlArgs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ChatBotAction } from './state/action';
-import { Profile } from './Profile';
 import { CodeBlock } from './CodeBlock';
-import { getXMLErrors } from './getXMLErrors';
+import { getXMLErrors, parseXML, getXMLBody } from './getXMLErrors';
+import { WebsitePreview } from './WebsitePreview';
+import { codeFromState } from './state/code';
+import { ChatBotState } from './state';
 
 type TriggerProps = { value: string; steps?: any };
+
+function LinkToWebsite() {
+  const code = useSelector<ChatBotState, string>((state) =>
+    codeFromState(state.code)
+  );
+  const url = createWebsiteURLWithData('site', code);
+  return <a href={url}>Click hier um deine Website zu öffnen</a>;
+}
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
@@ -25,7 +35,7 @@ export function ProgrammingChatBot() {
     {
       id: 'start',
       message: 'Hej, ich bin Saphira 🐉 Wie heißt du? 🤗',
-      trigger: 'enter-username',
+      trigger: 'enter-website-welt-sagen',
     },
     {
       id: 'enter-username',
@@ -287,10 +297,39 @@ export function ProgrammingChatBot() {
     {
       id: 'enter-website-welt-sagen',
       user: true,
-      trigger: 'enter-website-welt-sagen-korrekt',
-    } /*TODO: über Parser lösen `Überprüfe: wenn abgeschrieben, dann trigger=enter-website-welt-sagen-abschreiben; wenn slash vergessen,
-dann trigger=enter-website-welt-sagen-slash; wenn body-tag nicht geschlossen, dann trigger= enter-website-welt-sagen-body;
-bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; wenn korrekt, dann trigger= enter-website-welt-sagen-korrekt` */,
+      trigger: (args: TriggerArgs) => {
+        const xml = parseXML(args.value);
+        if (args.value === '<body>Mein Lieblingstier: Die Schildkröte</body>') {
+          return 'enter-website-welt-sagen-abschreiben';
+        }
+        const errors = getXMLErrors(xml);
+        const body = getXMLBody(xml);
+
+        if (errors) {
+          return 'enter-website-welt-sagen-error';
+        }
+
+        if (!body) {
+          return 'enter-website-welt-sagen-body';
+        }
+
+        dispatch({ type: 'setBody', value: body.innerHTML });
+        return 'enter-website-welt-sagen-korrekt';
+      },
+    },
+    {
+      id: 'enter-website-welt-sagen-error',
+      component: React.createElement((args: MessageArgs) => {
+        const errors = getXMLErrors(parseXML(args.previousValue));
+        return <div>{errors}</div>;
+      }),
+      trigger: 'enter-website-welt-sagen-error-2',
+    },
+    {
+      id: 'enter-website-welt-sagen-error-2',
+      message: "Da ist wohl was schief gelaufen. Probier's doch noch einmal.",
+      trigger: 'enter-website-welt-sagen',
+    },
     {
       id: 'enter-website-welt-sagen-abschreiben',
       message: `Hej - nicht einfach abschreiben! 🤔️`,
@@ -332,7 +371,13 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     },
     {
       id: 'ask-website-sieht-gut-aus',
-      message: `Da ist sie nun deine Homepage! Gefällt sie dir? 😊 ️`,
+      component: <WebsitePreview />,
+      trigger: 'ask-website-sieht-gut-aus-2',
+      delay: 1000,
+    },
+    {
+      id: 'ask-website-sieht-gut-aus-2',
+      message: `Da ist sie nun deine Homepage! Gefällt sie dir? 😊`,
       trigger: 'select-website-sieht-gut-aus',
       delay: 1000,
     },
@@ -440,7 +485,10 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     {
       id: 'enter-body-headline-headline-true',
       user: true,
-      trigger: 'body-headline-close',
+      trigger: (args: TriggerArgs) => {
+        dispatch({ type: 'setTitle', value: args.value });
+        return 'body-headline-close';
+      },
     },
 
     {
@@ -500,8 +548,7 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
       id: 'select-body-close-headline-true',
       /* Hier soll die letzte User-Eingabe mit übernommen werden */
       trigger: 'sieht-ziemlich-cool-aus',
-      asMessage: true,
-      component: <CodeBlock />,
+      component: <WebsitePreview />,
     },
     {
       id: 'sieht-ziemlich-cool-aus',
@@ -592,9 +639,30 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     {
       id: 'select-farbe-ueberschrift',
       options: [
-        { value: 1, label: 'rot', trigger: 'farbige-ueberschrift-super' },
-        { value: 2, label: 'gelb', trigger: 'farbige-ueberschrift-super' },
-        { value: 3, label: 'blau', trigger: 'farbige-ueberschrift-super' },
+        {
+          value: 1,
+          label: 'rot',
+          trigger: () => {
+            dispatch({ type: 'setTitleColor', value: 'red' });
+            return 'farbige-ueberschrift-super';
+          },
+        },
+        {
+          value: 2,
+          label: 'gelb',
+          trigger: () => {
+            dispatch({ type: 'setTitleColor', value: 'yellow' });
+            return 'farbige-ueberschrift-super';
+          },
+        },
+        {
+          value: 3,
+          label: 'blau',
+          trigger: () => {
+            dispatch({ type: 'setTitleColor', value: 'blue' });
+            return 'farbige-ueberschrift-super';
+          },
+        },
       ],
       /*
        *hier dann die gewählte Farbe in den Code rein schreiben
@@ -604,6 +672,18 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
 
     {
       id: 'farbige-ueberschrift-super',
+      component: (
+        <div>
+          <CodeBlock />
+          <br />
+          <WebsitePreview />
+        </div>
+      ),
+      trigger: 'farbige-ueberschrift-super-2',
+    },
+
+    {
+      id: 'farbige-ueberschrift-super-2',
       message: 'Das sieht ja schon richtig cool aus!',
       trigger: 'inhalt-erstellen',
     },
@@ -624,15 +704,18 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
 
     {
       id: 'inhalt-schildkroete',
-      code: true,
-      message: `<body>
-<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>
-
-Es gibt auf der ganzen Welt derzeit 341 verscheidene Schildkrötenarten.
-Es gibt Landschildkrötenarten und kleine Wasserschildkröten und auch große
-Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
-
-</body>`,
+      component: (
+        <CodeBlock
+          content={`<body>
+      <h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>
+      
+      Es gibt auf der ganzen Welt derzeit 341 verscheidene Schildkrötenarten.
+      Es gibt Landschildkrötenarten und kleine Wasserschildkröten und auch große
+      Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
+      
+      </body>`}
+        />
+      ),
       trigger: 'inhalt-selbst-schreiben',
     },
 
@@ -650,7 +733,10 @@ Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
     {
       id: 'enter-inhalt',
       user: true,
-      trigger: 'hp-fertig',
+      trigger: (args: TriggerArgs) => {
+        dispatch({ type: 'setBody', value: args.value });
+        return 'hp-fertig';
+      },
     },
 
     {
@@ -662,149 +748,12 @@ Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
     {
       id: 'finaler-link',
       message: 'Schau gleich hier: ',
-
-      /*
-       * hier muss dann noch der link eingefügt werden
-       */
+      trigger: 'link to website',
+    },
+    {
+      id: 'link to website',
+      component: <LinkToWebsite />,
       end: true,
-    },
-  ];
-
-  const stepsOld = [
-    {
-      id: 'start',
-      message: `Moin, was möchtest du machen?`,
-      trigger: 'select',
-    },
-    {
-      id: 'profile',
-      component: <Profile />,
-      trigger: 'start',
-    },
-    {
-      id: 'select',
-      options: [
-        { value: 1, label: 'Namen ändern', trigger: 'update-name' },
-        { value: 2, label: 'Alter angeben', trigger: 'update-age' },
-        { value: 3, label: 'Programmieren', trigger: 'code-start' },
-        { value: 4, label: 'Website erstellen', trigger: 'create-website' },
-        { value: 5, label: 'Mein Profil', trigger: 'profile' },
-        { value: 6, label: 'Code eingeben', trigger: 'update-code' },
-      ],
-    },
-    {
-      id: 'update-name',
-      message: 'Okay, wie heißt du?',
-      trigger: 'enter-name',
-    },
-    {
-      id: 'enter-name',
-      user: true,
-      trigger: 'set-name',
-    },
-    {
-      id: 'set-name',
-      message: (args: MessageArgs) => {
-        dispatch({ type: 'setName', value: args.previousValue });
-        return `Moin ${args.previousValue}!`;
-      },
-      trigger: 'start',
-    },
-    {
-      id: 'update-age',
-      message: 'Wie alt bist du?',
-      trigger: 'enter-age',
-    },
-    {
-      id: 'enter-age',
-      user: true,
-      validator: (input: string) => {
-        const value = parseInt(input);
-        if (isNaN(value)) {
-          return 'Bitte gib eine Zahl ein.';
-        } else if (value < 10 || value >= 100) {
-          return `${value}? Komm schon.`;
-        }
-        return true;
-      },
-      trigger: 'set-age',
-    },
-    {
-      id: 'set-age',
-      message: (args: MessageArgs) => {
-        dispatch({ type: 'setAge', value: parseInt(args.previousValue) });
-        return `Du bist also ${parseInt(args.previousValue)}.`;
-      },
-      trigger: 'start',
-    },
-    {
-      id: 'code-start',
-      message:
-        'Ok, dann schreibe mal eine JavaScript funktion die zwei Zahlen addiert.',
-      trigger: 'enter-code',
-    },
-    {
-      id: 'enter-code',
-      trigger: 'finish-code',
-      user: true,
-      validator: (input: string) => {
-        try {
-          const a = Math.random(),
-            b = Math.random();
-          if (eval(input)(a, b) === a + b) {
-            return true;
-          } else {
-            return 'Das hat leider nicht geklappt. :(';
-          }
-        } catch (error) {
-          return error;
-        }
-      },
-    },
-    {
-      id: 'finish-code',
-      message: 'Herzlichen Glückwunsch! Du bist jetzt ein Programmierer!',
-      trigger: 'start',
-    },
-    {
-      id: 'create-website',
-      message: 'Cool! Dann gib mal deinen HTML code ein.',
-      trigger: 'enter-website',
-    },
-    {
-      id: 'enter-website',
-      trigger: 'finish-website',
-      user: true,
-    },
-    {
-      id: 'finish-website',
-      message: (args: MessageArgs) => {
-        dispatch({
-          type: 'setURL',
-          value: createWebsiteURLWithData('site', args.previousValue),
-        });
-        return 'Super! Deine Website ist jetzt im Link unten!';
-      },
-      trigger: 'profile',
-    },
-    {
-      id: 'update-code',
-      message: 'Bitte schreibe etwas code',
-      trigger: 'enter-code',
-    },
-    {
-      id: 'enter-code',
-      user: true,
-      trigger: (props: TriggerProps) => {
-        dispatch({ type: 'setCode', value: props.value });
-        return 'show-code-block';
-      },
-    },
-    {
-      id: 'show-code-block',
-      asMessage: true,
-      component: <CodeBlock content={`<tag>`} />,
-      trigger: 'profile',
     },
   ];
 

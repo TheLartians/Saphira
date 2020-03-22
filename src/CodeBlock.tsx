@@ -1,14 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { ChatBotState } from './state';
+import { codeFromState } from './state/code';
 
 /**
  * If content is provided, display content. Otherwise display the code stored
  * in the redux store
  */
 export const CodeBlock = (props: { content?: string }) => {
-  const savedCode = useSelector<ChatBotState>(
-    (state: ChatBotState) => state.code
+  const savedCode = useSelector<ChatBotState>((state: ChatBotState) =>
+    codeFromState(state.code)
   );
   const code = props.content || savedCode;
 
