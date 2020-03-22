@@ -283,7 +283,7 @@ export function ProgrammingChatBot() {
     },
     {
       id: 'welt-sagen-nein',
-      message: `Ich habe auch mal eine Webseite gemacht, auf der ich meinen Eltern danke. Die haben sich sehr gefreut! Ein Freund hat auch mal eine Webseite über Fussball gemacht ⚽️`,
+      message: `Hier ein paar Ideen: Ich habe auch mal eine Webseite gemacht, auf der ich meinen Eltern danke. Die haben sich sehr gefreut! Ein Freund hat auch mal eine Webseite über Fussball gemacht ⚽️`,
       trigger: 'welt-sagen-ja',
       delay: 4000,
     },
@@ -391,7 +391,7 @@ export function ProgrammingChatBot() {
 
     {
       id: 'website-sieht-gut-ja',
-      message: `Es sieht schon dufte aus, aber mit meiner Dicken Brille 🤶 erkenne ich bei der kleinen Schrift nichts! ️`,
+      message: `Es sieht schon dufte aus, aber mit meiner Dicken Brille 🤶 erkenne ich bei der kleinen Schrift nichts!️`,
       trigger: 'explain-headline-tag',
       delay: 1000,
     },
@@ -430,7 +430,7 @@ export function ProgrammingChatBot() {
 
     {
       id: 'zuerst-machen',
-      message: `Was würdest du zuerst machen?`,
+      message: `Wenn du jetzt deine Homepage neu erstellst: Was würdest du zuerst machen?`,
       trigger: 'select-body-headline',
     },
 
@@ -494,33 +494,33 @@ export function ProgrammingChatBot() {
     {
       id: 'body-headline-close',
       message: 'Und wie geht es dann weiter?',
-      trigger: 'select-body-close-headline',
+      trigger: 'select-headline-close',
     },
 
     {
-      id: 'select-body-close-headline',
+      id: 'select-headline-close',
       options: [
         {
           value: 1,
           label: '</body>',
-          trigger: 'select-body-close-headline-false',
+          trigger: 'select-close-headline-false',
         },
         {
           value: 2,
           label: '</h1>',
-          trigger: 'select-body-close-headline-true',
+          trigger: 'select-close-headline-true',
         },
       ],
     },
     {
-      id: 'select-body-close-headline-false',
+      id: 'select-close-headline-false',
       message: `Fast! Bitte versuche es erneut.`,
-      trigger: 'select-body-close-headline',
+      trigger: 'select-headline-close',
       delay: 1000,
     },
 
     {
-      id: 'select-body-close-headline-true-weiter',
+      id: 'select-close-headline-true',
       message: 'Und dann?',
       trigger: 'select-body-close',
     },
@@ -530,23 +530,23 @@ export function ProgrammingChatBot() {
         {
           value: 1,
           label: '</body>',
-          trigger: 'select-body-close-headline-true',
+          trigger: 'select-body-close-true',
         },
         {
           value: 2,
           label: '</head>',
-          trigger: 'select-body-close-headline-false',
+          trigger: 'select-body-close-false',
         },
       ],
     },
     {
-      id: 'select-body-close-headline-false',
+      id: 'select-body-close-false',
       message: `Fast! Bitte versuche es erneut.`,
-      trigger: 'select-body-close-headline',
+      trigger: 'select-body-close',
     },
     {
-      id: 'select-body-close-headline-true',
-      /* Hier soll die letzte User-Eingabe mit übernommen werden */
+      id: 'select-body-close-true',
+      /* TODO: Hier soll die letzte User-Eingabe mit übernommen werden */
       trigger: 'sieht-ziemlich-cool-aus',
       component: <WebsitePreview />,
     },
@@ -554,14 +554,14 @@ export function ProgrammingChatBot() {
       id: 'sieht-ziemlich-cool-aus',
       message: `Das ist doch schon mal ziemlich cool. 😎 Aber es ist schon ein bisschen langweilig, dass das alles in schwarz ist. `,
       trigger: 'gruene-ueberschrift',
-      delay: 2000,
+      delay: 3000,
     },
     {
       id: 'gruene-ueberschrift',
       message:
         'Meine Lieblingsfarbe ist ja grün. Deshalb will ich meine Überschrift in grün haben. 😍 Dafür muss ich bei der Überschrift sagen, dass sie grün sein soll. 🎨',
       trigger: 'gruene-ueberschrift-so',
-      delay: 2000,
+      delay: 3000,
     },
 
     {
@@ -572,9 +572,24 @@ export function ProgrammingChatBot() {
 
     {
       id: 'gruene-ueberschrift-code',
-      message: `<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>`,
-      trigger: 'gruene-ueberschrift-gesamt-code-ueberleitung',
-      code: true,
+      component: (
+        <CodeBlock
+          content={`<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>`}
+        />
+      ),
+      asMessage: true,
+      trigger: 'gruene-ueberschrift-verstanden',
+    },
+
+    {
+      id: 'gruene-ueberschrift-verstanden',
+      options: [
+        {
+          value: 1,
+          label: 'Weiter!',
+          trigger: 'gruene-ueberschrift-gesamt-code-ueberleitung',
+        },
+      ],
     },
 
     {
@@ -585,16 +600,25 @@ export function ProgrammingChatBot() {
 
     {
       id: 'gruene-ueberschrift-gesamt-code',
-      message: `<body><h1 style="color=green;">Das ist die Homepage von <Botname></h1></body>`,
+      component: (
+        <CodeBlock
+          content={`<CodeBlock content={<body><h1 style="color=green;">Mein Lieblingstier: Die Schildkröte<Botname></h1></body>}/>`}
+        />
+      ),
+      asMessage: true,
       trigger: 'andere-farben',
-      code: true,
     },
 
     {
       id: 'andere-farben',
       message:
         'Hinter color= kannst du verschiedene Farben auf Englisch eintragen. Vergiss das Istgleichzeichen nicht!',
-      trigger: 'fabe-definieren',
+      trigger: 'andere-farben-verstanden',
+    },
+
+    {
+      id: 'andere-farben-verstanden',
+      options: [{ value: 1, label: 'Verstanden!', trigger: 'fabe-definieren' }],
     },
 
     {
@@ -665,9 +689,9 @@ export function ProgrammingChatBot() {
         },
       ],
       /*
-       *hier dann die gewählte Farbe in den Code rein schreiben
-      außerdem sollte hier dann noch in den Code der Text aus der Überschrift rein von oben und alle closing tags
-      */
+       *TODO: hier dann die gewählte Farbe in den Code rein schreiben außerdem sollte hier dann noch in den Code der Text aus der Überschrift rein von oben und alle closing tags
+       * TODO: dann noch die homepage anzeigen?
+       */
     },
 
     {
@@ -722,7 +746,7 @@ export function ProgrammingChatBot() {
     {
       id: 'inhalt-selbst-schreiben',
       message:
-        'Jetzt kanns du deinen Inhalt passend zu deinem Titel schreiben.',
+        'Jetzt kanns du deinen Inhalt passend zu deinem Titel schreiben. Die Überschrift von eben habe ich mir gemerkt und füge sie zu deinem Inhalt dazu.',
       trigger: 'enter-inhalt',
     },
 
