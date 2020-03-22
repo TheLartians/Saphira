@@ -332,7 +332,7 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     },
     {
       id: 'ask-website-sieht-gut-aus',
-      message: `Da ist sie nun deine Homepage! Gefällt sie dir? 😊 ️`,
+      message: `Da ist sie nun deine Homepage! Gefällt sie dir? 😊`,
       trigger: 'select-website-sieht-gut-aus',
       delay: 1000,
     },
@@ -346,7 +346,7 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
 
     {
       id: 'website-sieht-gut-ja',
-      message: `Es sieht schon dufte aus, aber mit meiner Dicken Brille 🤶 erkenne ich bei der kleinen Schrift nichts! ️`,
+      message: `Es sieht schon dufte aus, aber mit meiner Dicken Brille 🤶 erkenne ich bei der kleinen Schrift nichts!️`,
       trigger: 'explain-headline-tag',
       delay: 1000,
     },
@@ -447,33 +447,33 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
     {
       id: 'body-headline-close',
       message: 'Und wie geht es dann weiter?',
-      trigger: 'select-body-close-headline',
+      trigger: 'select-headline-close',
     },
 
     {
-      id: 'select-body-close-headline',
+      id: 'select-headline-close',
       options: [
         {
           value: 1,
           label: '</body>',
-          trigger: 'select-body-close-headline-false',
+          trigger: 'select-close-headline-false',
         },
         {
           value: 2,
           label: '</h1>',
-          trigger: 'select-body-close-headline-true-weiter',
+          trigger: 'select-close-headline-true',
         },
       ],
     },
     {
-      id: 'select-body-close-headline-false',
+      id: 'select-close-headline-false',
       message: `Fast! Bitte versuche es erneut.`,
-      trigger: 'select-body-close-headline',
+      trigger: 'select-headline-close',
       delay: 1000,
     },
 
     {
-      id: 'select-body-close-headline-true-weiter',
+      id: 'select-close-headline-true',
       message: 'Und dann?',
       trigger: 'select-body-close',
     },
@@ -483,22 +483,22 @@ bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; we
         {
           value: 1,
           label: '</body>',
-          trigger: 'select-body-close-headline-true',
+          trigger: 'select-body-close-true',
         },
         {
           value: 2,
           label: '</head>',
-          trigger: 'select-body-close-headline-false',
+          trigger: 'select-body-close-false',
         },
       ],
     },
     {
-      id: 'select-body-close-headline-false',
+      id: 'select-body-close-false',
       message: `Fast! Bitte versuche es erneut.`,
-      trigger: 'select-body-close-headline',
+      trigger: 'select-body-close',
     },
     {
-      id: 'select-body-close-headline-true',
+      id: 'select-body-close-true',
       /* TODO: Hier soll die letzte User-Eingabe mit übernommen werden */
       trigger: 'sieht-ziemlich-cool-aus',
       asMessage: true,
@@ -668,7 +668,7 @@ Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
     {
       id: 'inhalt-selbst-schreiben',
       message:
-        'Jetzt kanns du deinen Inhalt passend zu deinem Titel schreiben.',
+        'Jetzt kanns du deinen Inhalt passend zu deinem Titel schreiben. Die Überschrift von eben habe ich mir gemerkt und füge sie zu deinem Inhalt dazu.',
       trigger: 'enter-inhalt',
     },
 
