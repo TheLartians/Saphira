@@ -7,8 +7,6 @@ export function getXMLErrors(code: string) {
   if (errors.length > 0) {
     const result: JSX.Element[] = [];
     for (let i = 0; i < errors.length; ++i) {
-      console.log('test');
-      console.log(String(errors[i].innerHTML));
       result.push(
         <div
           key={i}
