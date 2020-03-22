@@ -17,7 +17,7 @@ function LinkToWebsite() {
     codeFromState(state.code)
   );
   const url = createWebsiteURLWithData('site', code);
-  return <a href={url}>Click hier um deine Website zu öffnen</a>;
+  return <a href={url}>Klick hier um deine Website zu öffnen</a>;
 }
 
 export function ProgrammingChatBot() {
@@ -77,23 +77,47 @@ export function ProgrammingChatBot() {
       id: 'explain-build-together',
       message:
         'Wir machen das so: Ich zeige dir, wie ich meine Homepage programmiere und du kannst dann in jedem Schritt deine eigene Homepage entwickeln. 🙃💪',
-      trigger: 'explain-language-basic',
-      delay: 3000,
+      trigger: 'los-gehts',
+      delay: 4000,
     },
+
+    {
+      id: 'los-gehts',
+      options: [
+        {
+          value: 1,
+          label: "Los geht's!",
+          trigger: 'explain-language-basic',
+        },
+      ],
+    },
+
     {
       id: 'explain-language-basic',
       message:
         'Zuerst erkläre ich dir ganz grob, wie die Sprache funktioniert. ',
       trigger: 'explain-language-basic-tags',
-      delay: 1000,
+      delay: 2000,
     },
     {
       id: 'explain-language-basic-tags',
       message:
         'Immer, wenn wir was definieren wollen, müssen wir sagen, wo es anfängt und wo es aufhört. Dafür nutzen wir Tags. 🤖',
-      trigger: 'explain-language-basic-tags-language',
-      delay: 2000,
+      trigger: 'was-ist-das',
+      delay: 4000,
     },
+
+    {
+      id: 'was-ist-das',
+      options: [
+        {
+          value: 1,
+          label: 'Tage?!',
+          trigger: 'explain-language-basic-tags-language',
+        },
+      ],
+    },
+
     {
       id: 'explain-language-basic-tags-language',
       message:
@@ -103,11 +127,23 @@ export function ProgrammingChatBot() {
     },
     {
       id: 'code-explain-language-basic-tags',
-      trigger: 'ask-tag-input',
+      trigger: 'ok',
       component: <CodeBlock content={`<tag>`} />,
       asMessage: true,
       delay: 1000,
     },
+
+    {
+      id: 'ok',
+      options: [
+        {
+          value: 1,
+          label: 'Ok!',
+          trigger: 'ask-tag-input',
+        },
+      ],
+    },
+
     {
       id: 'ask-tag-input',
       message:
@@ -265,7 +301,7 @@ export function ProgrammingChatBot() {
 
     {
       id: 'lieblingstier-website-gebaut',
-      message: `Ja, ich habe Schildkröten richtig gern. Deshalb will ich eine Webseite über Schildkröten programmiert. 🤓`,
+      message: `Ja, ich habe Schildkröten richtig gern. 😍🐢😍 Deshalb will ich eine Webseite über Schildkröten programmiert. 🤓`,
       trigger: 'welt-sagen-website',
       delay: 3500,
     },
