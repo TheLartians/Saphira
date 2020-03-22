@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 import ChatBot from 'react-simple-chatbot';
 import { MessageArgs } from './chatbot-types';
 import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
@@ -9,6 +9,15 @@ import { CodeBlock } from './CodeBlock';
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
+  const [height, setHeight] = useState(window.innerHeight);
+
+  React.useEffect(() => {
+    function updateHeight() {
+      setHeight(window.innerHeight);
+    }
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  });
 
   const steps = [
     {
@@ -152,7 +161,11 @@ export function ProgrammingChatBot() {
       trigger: 'profile',
     },
   ];
-  // `Hier ist deine Website: ${createWebsiteURLWithData("site",args.previousValue)}`
+
+  if (height <= 750) {
+    return <ChatBot width="100%" steps={steps} floating={true} opened={true} />;
+  }
+
   return (
     <div
       style={{
@@ -181,7 +194,7 @@ export function ProgrammingChatBot() {
             fontSize: 25,
           }}
         >
-          Code-Dragon
+          Saphira
         </p>
         <div>
           <ChatBot steps={steps} />
