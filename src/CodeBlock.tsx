@@ -2,7 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { ChatBotState } from './state';
 
-export const CodeBlock = () => {
+/**
+ * If content is provided, display content. Otherwise display the code stored
+ * in the redux store
+ */
+export const CodeBlock = (props: { content?: string }) => {
   const code = useSelector<ChatBotState>((state: ChatBotState) => state.code);
 
   return (
@@ -15,7 +19,7 @@ export const CodeBlock = () => {
       }}
     >
       <HeaderBar />
-      {code || `<NO CODE>`}
+      {props.content ? props.content : (code || `<NO CODE>`)}
     </div>
   )
 }

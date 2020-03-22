@@ -157,7 +157,7 @@ export function ProgrammingChatBot() {
     {
       id: 'show-code-block',
       asMessage: true,
-      component: <CodeBlock  />,
+      component: <CodeBlock content={`<tag>`}  />,
       trigger: 'profile',
     },
   ];
