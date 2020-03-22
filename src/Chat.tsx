@@ -117,6 +117,7 @@ export function ProgrammingChatBot() {
         }
       },
     },
+      //TODO über Parser lösen
     {
       id: 'enter-tag-input-true',
       message: 'Das klappt ja super!',
@@ -150,11 +151,17 @@ export function ProgrammingChatBot() {
     {
       id: 'enter-slash',
       user: true,
-      trigger: 'only-smartphone',
-      validate:
-        'Überüfe, ob user ein Slash eingibt; wenn true dann trigger= enter-slash-true; wenn false dann trigger=enter-slash-false ',
-      delay: 2000,
+      trigger: (props: TriggerProps) => {
+      console.log(props.value);
+      if (props.value === '</tag>') {
+      return 'enter-slash-true';
+    } else {
+      return 'enter-slash-false';
+    }
+  },
+
     },
+      //TODO: über Parser lösen
     {
       id: 'enter-slash-false',
       message: 'Das stimmt noch nicht ganz, versuche es nochmal',
@@ -167,267 +174,452 @@ export function ProgrammingChatBot() {
         'Sehr gut! Jetzt haben wir erstmal genug Theorie gehabt, jetzt geht es los! 💪',
       trigger: "hast-du-lust-loszulegen",
       delay: 1000,
-      end: true,
+
     },
 
     {
       id: "hast-du-lust-loszulegen",
       message: "Hast du Lust loszulegen? 😊",
       trigger: "hast-du-lust-loszulegen-select",
-  },
-  {
+    },
+    {
       id: "hast-du-lust-loszulegen-select",
       options: [
-          { value: 1, label: 'Jawoll!', trigger: 'super-wir-starten' },
-          { value: 2, label: 'Nö', trigger: 'noch-mehr-theorie' },
+        { value: 1, label: 'Jawoll!', trigger: 'super-wir-starten' },
+        { value: 2, label: 'Nö', trigger: 'noch-mehr-theorie' },
       ]
-  },
-  {
+    },
+    {
       id: "super-wir-starten",
       message: "Super!! Wir starten! 🚀",
       trigger: "um-auf-unserer-homepage-etwas-darzustellen",
       delay: 1000
-  },
-  {
+    },
+    {
       id: "noch-mehr-theorie",
       message: "Du willst NOCH MEHR Theorie? Nicht mit mir! Wir gehen jetzt ans Eingemachte! Es wird toll!",
       trigger: "um-auf-unserer-homepage-etwas-darzustellen",
-      delay: 3000
-  },
-  {
+      delay: 3000,
+    },
+
+    {
       id: "um-auf-unserer-homepage-etwas-darzustellen",
       message: `Um auf unserer Homepage etwas darzustellen, benötigt diese einen sogenannten Körper (im Englischen: "Body")`,
       trigger: "body-verstanden",
-  },
+    },
 
-  {
+    {
       id: "body-verstanden",
       options: [
-          { value: 1, label: 'Verstanden?', trigger: 'im-body-kompletter-inhalt' },
+        { value: 1, label: 'Verstanden!', trigger: 'im-body-kompletter-inhalt' },
       ]
-  },
+    },
 
-  {
-       id: "im-body-kompletter-inhalt",
+    {
+      id: "im-body-kompletter-inhalt",
       message: `Im Body kannst du den kompletten Inhalt einer Homepage festlegen. 💪`,
       trigger: "chatbot-body-beispiel",
       delay: 2000
-  },
-  {
+    },
+    {
       id: "chatbot-body-beispiel",
       message: `Ich mache das zum Beispiel so:`,
       trigger: "code-lieblingstier-body",
       delay: 1000
-  },
+    },
 
-  {
+    {
       id: "code-lieblingstier-body",
       trigger: "code-body-verstanden",
       asMessage:true,
       component: <CodeBlock content={`<body>Mein Lieblingstier: Die Schildkröte</body>`}  />
-  },
+    },
 
-  {
+    {
       id: "code-body-verstanden",
       options: [
-          { value: 1, label: 'Verstanden?', trigger: 'lieblingstier-website-gebaut' },
+        { value: 1, label: 'Verstanden!', trigger: 'lieblingstier-website-gebaut' },
       ]
-  },
+    },
 
-  {
+    {
       id: "lieblingstier-website-gebaut",
-      message: `Ja, ich habe Schildkröten richtig gern. Deshalb habe ich mal eine Webseite über Schildkröten programmiert. 🤓`,
+      message: `Ja, ich habe Schildkröten richtig gern. Deshalb will ich eine Webseite über Schildkröten programmiert. 🤓`,
       trigger: "welt-sagen-website",
       delay: 3500
-  },
-  {
+    },
+    {
       id: "welt-sagen-website",
       message: `Weißt du schon, was du der Welt sagen möchtest?`,
       trigger: "select-welt-sagen"
-  },
+    },
     {
       id: "select-welt-sagen",
       options: [
-          { value: 1, label: 'Ja', trigger: 'welt-sagen-ja' },
-          { value: 2, label: 'Nein', trigger: 'welt-sagen-nein' },
+        { value: 1, label: 'Ja', trigger: 'welt-sagen-ja' },
+        { value: 2, label: 'Nein', trigger: 'welt-sagen-nein' },
       ]
-  },
-  {
+    },
+    {
       id: "welt-sagen-nein",
       message: `Ich habe auch mal eine Webseite gemacht, auf der ich meinen Eltern danke. Die haben sich sehr gefreut! Ein Freund hat auch mal eine Webseite über Fussball gemacht ⚽️`,
       trigger: "welt-sagen-ja",
       delay: 4000
-  },
-      {
+    },
+    {
       id: "welt-sagen-ja",
       message: `Also schreib doch einfach mal was hin. Natürlich in einem <body>!️`,
       trigger: "enter-website-welt-sagen",
-      delay: 2000
-  },
-  {
+      delay: 2000,
+    },
+
+    {
       id: "enter-website-welt-sagen",
       user: true,
-      trigger: (props: TriggerProps) => {
-        const input = props.value;
-        if (input.startsWith('')) {
-
-        }
-      },
-      validate: `Überprüfe: wenn abgeschrieben, dann trigger=enter-website-welt-sagen-abschreiben; wenn slash vergessen,
-      dann trigger=enter-website-welt-sagen-slash; wenn body-tag nicht geschlossen, dann trigger= enter-website-welt-sagen-body;
-      bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; wenn korrekt, dann trigger= enter-website-welt-sagen-korrekt`
-  },
-  {
+      trigger: "enter-website-welt-sagen-korrekt"
+    }, /*TODO: über Parser lösen `Überprüfe: wenn abgeschrieben, dann trigger=enter-website-welt-sagen-abschreiben; wenn slash vergessen,
+dann trigger=enter-website-welt-sagen-slash; wenn body-tag nicht geschlossen, dann trigger= enter-website-welt-sagen-body;
+bei sonstigem Schreibfehler, trigger=  enter-website-welt-sagen-schreibweise; wenn korrekt, dann trigger= enter-website-welt-sagen-korrekt` */
+    {
       id: "enter-website-welt-sagen-abschreiben",
       message: `Hej - nicht einfach abschreiben! 🤔️`,
       trigger: "enter-website-welt-sagen-abschreiben-eigener-text",
       delay: 1000
-  },
-  {
+    },
+    {
       id: "enter-website-welt-sagen-abschreiben-eigener-text",
       message: `Schreibe deinen eigenen Text.️`,
       trigger: "enter-website-welt-sagen",
       delay: 1000
-  },
-  {
+    },
+    {
       id: "enter-website-welt-sagen-schreibweise",
       message: `Achte auf die Richtige Schreibweise 🤥️`,
       trigger: "code-lieblingstier-body",
       delay: 1000
-  },
-  {
+    },
+    {
       id: "enter-website-welt-sagen-body",
       message: `Denk dran, dass der Text von dem Beginn <body> sowie dem Ende </body> eingefasst wird 😮️`,
       trigger: "code-lieblingstier-body",
       delay: 2000
-  },
-  {
+    },
+    {
       id: "enter-website-welt-sagen-slash",
       message: `Huch, hast du vielleicht etwas vergessen? Denke immer an den schrägen Strich "/" wenn du eine HTML-Anweisung wieder schließen möchtest. 🤖 ️`,
       trigger: "code-lieblingstier-body",
       delay: 4000
-  },
-  {
+    },
+    {
       id: "enter-website-welt-sagen-korrekt",
       message: `Super, jetzt haben wir auch schon den Inhalt deiner Website. ️`,
       trigger: "ask-website-sieht-gut-aus",
-      /*
+      /* TODO:
       *hier müsste ggf. die Website dargestellt werden
       */
       delay: 2000
-  },
-  {
+    },
+    {
       id: "ask-website-sieht-gut-aus",
       message: `Da ist sie nun deine Homepage! Gefällt sie dir? 😊 ️`,
       trigger: "select-website-sieht-gut-aus",
       delay: 1000
-  },
-  {
+    },
+    {
       id: "select-website-sieht-gut-aus",
       options: [
-          { value: 1, label: 'Ja', trigger: 'website-sieht-gut-ja' },
-          { value: 2, label: 'Nein', trigger: 'website-sieht-gut-nein' },
-      ]
-  },
-  {
+        { value: 1, label: 'Ja', trigger: 'website-sieht-gut-ja' },
+        { value: 2, label: 'Nein', trigger: 'website-sieht-gut-nein' },
+      ],
+    },
+
+
+    {
       id: "website-sieht-gut-ja",
       message: `Es sieht schon dufte aus, aber mit meiner Dicken Brille 🤶 erkenne ich bei der kleinen Schrift nichts! ️`,
-      trigger: "explain-headline-tag"
-  },
-  {
+      trigger: "explain-headline-tag",
+      delay: 1000
+    },
+    {
       id: "website-sieht-gut-nein",
       message: `Das habe ich mir schon gedacht! Wir machen es jetzt noch glamoröser! 🤩️`,
-      trigger: "explain-headline-tag"
-  },
-  {
+      trigger: "explain-headline-tag",
+      delay: 1000
+    },
+    {
       id: "explain-headline-tag",
       message: `Machen wir die Zeile ganz groß! Dazu gibt es titel! Die heißen <h1>, <h2>, <h3>, <h4>, <h5>. Und es gibt sogar noch <h6>️`,
-      trigger: "sprache-text-rechts-links"
-  },
-  {
+      trigger: "sprache-text-rechts-links",
+      delay: 2000
+    },
+    {
       id: "sprache-text-rechts-links",
       message: `Wie du ja weißt, verpackt man in dieser Sprache html den Text immer von links und rechts, also zum Beispiel so:️`,
-      trigger: "code-sprache-text-rechts-links"
-  },
-  {
+      trigger: "code-sprache-text-rechts-links",
+      delay: 1500
+    },
+
+
+    {
       id: "code-sprache-text-rechts-links",
-      trigger: "ask-headline-schreiben",
+      trigger: "ueberschrift-verstanden",
       asMessage:true,
       component: <CodeBlock content={`<h3>Hallo ich bin eine Überschrift</h3>`}  />
 
-  },
-  {
+    },
+
+    {
+      id: "ueberschrift-verstanden",
+      options: [
+        { value: 1, label: 'Verstanden!', trigger: 'zuerst-machen' },
+      ]
+    },
+
+    {
+      id: "zuerst-machen",
+      message: `Was würdest du zuerst machen?`,
+      trigger: "select-body-headline"
+    },
+
+    {
       id: "select-body-headline",
       options: [
-          { value: 1, label: '<head>', trigger: 'select-body-headline-false' },
-          { value: 2, label: '<body>', trigger: 'select-body-headline-true' },
-          { value: 3, label: '<h1>', trigger: 'select-body-headline-false' },
+        { value: 1, label: '<head>', trigger: 'select-body-headline-false' },
+        { value: 2, label: '<body>', trigger: 'select-body-headline-true' },
+        { value: 3, label: '<h1>', trigger: 'select-body-headline-false' },
       ]
-  },
-  {
+    },
+    {
       id: "select-body-headline-false",
-      message: `Schade! Nicht ganz korrekt. Denk dran, dass der Text von dem Beginn <body> sowie dem Ende </body> eingefasst wird 😮`,
+      message: `Schade! Nicht ganz korrekt. Versuche es nochmal!`,
       trigger: "select-body-headline"
-  },
+    },
 
-  {
+    {
       id: "select-body-headline-true",
+      message: `Und dann?`,
+      trigger: "select-body-headline-true-weiter"
+    },
+
+    {
+      id: "select-body-headline-true-weiter",
       options: [
-          { value: 1, label: '<head>', trigger: 'select-body-headline-headline-false' },
-          { value: 2, label: '<h1>', trigger: 'select-body-headline-headline-true' },
+        { value: 1, label: '<head>', trigger: 'select-body-headline-headline-false' },
+        { value: 2, label: '<h1>', trigger: 'select-body-headline-headline-true' },
       ]
-  },
-          {
+    },
+    {
       id: "select-body-headline-headline-false",
       message: `Fast! Bitte versuche es erneut.`,
       trigger: "select-body-headline-true",
       delay: 1000
-  },
-  {
+    },
+
+    {
       id: "select-body-headline-headline-true",
+      message: "Jetzt gib deinen Titel ein",
+      trigger: "enter-body-headline-headline-true",
+    },
+
+    {
+      id: "enter-body-headline-headline-true",
       user: true,
+      trigger: "body-headline-close",
+    },
+
+    {
+      id: "body-headline-close",
+      message: "Und wie geht es dann weiter?",
       trigger: "select-body-close-headline",
-  },
-  {
+    },
+
+    {
       id: "select-body-close-headline",
       options: [
-          { value: 1, label: '</body>', trigger: 'select-body-close-headline-false' },
-          { value: 2, label: '</h1>', trigger: 'select-body-close-headline-true' },
+        { value: 1, label: '</body>', trigger: 'select-body-close-headline-false' },
+        { value: 2, label: '</h1>', trigger: 'select-body-close-headline-true' },
       ]
-  },
-  {
+    },
+    {
       id: "select-body-close-headline-false",
       message: `Fast! Bitte versuche es erneut.`,
       trigger: "select-body-close-headline",
       delay: 1000
-  },
-  {
-      id: "select-body-close-headline-true",
+    },
+
+    {
+      id: "select-body-close-headline-true-weiter",
+      message: "Und dann?",
+      trigger: "select-body-close",
+    },
+    {
+      id: "select-body-close",
       options: [
-          { value: 1, label: '</body>', trigger: 'select-body-close-headline-true-true' },
-          { value: 2, label: '</head>', trigger: 'select-body-close-headline-true-false' },
+        { value: 1, label: '</body>', trigger: 'select-body-close-headline-true' },
+        { value: 2, label: '</head>', trigger: 'select-body-close-headline-false' },
       ]
-  },
-  {
-      id: "select-body-close-headline-true-false",
+    },
+    {
+      id: "select-body-close-headline-false",
       message: `Fast! Bitte versuche es erneut.`,
-      trigger: "select-body-close-headline-true"
-  },
-      {
-      id: "select-body-close-headline-true-true",
+      trigger: "select-body-close-headline"
+    },
+    {
+      id: "select-body-close-headline-true",
       /* Hier soll die letzte User-Eingabe mit übernommen werden */
       trigger: "sieht-ziemlich-cool-aus",
       asMessage:true,
       component: <CodeBlock  />
-  },
-  {
+    },
+    {
       id: "sieht-ziemlich-cool-aus",
       message: `Das ist doch schon mal ziemlich cool. 😎 Aber es ist schon ein bisschen langweilig, dass das alles in schwarz ist. `,
-      trigger: "gruene-ueberschrift"
-  },
+      trigger: "gruene-ueberschrift",
+      delay: 2000
+    },
+    {
+      id: "gruene-ueberschrift",
+      message: "Meine Lieblingsfarbe ist ja grün. Deshalb will ich meine Überschrift in grün haben. 😍 Dafür muss ich bei der Überschrift sagen, dass sie grün sein soll. 🎨",
+      trigger: "gruene-ueberschrift-so",
+      delay: 2000
+    },
+
+    {
+      id: "gruene-ueberschrift-so",
+      message: "Das mache ich durch:",
+      trigger: "gruene-ueberschrift-code"
+    },
+
+    {
+      id: "gruene-ueberschrift-code",
+      message: `<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>`,
+      trigger: "gruene-ueberschrift-gesamt-code-ueberleitung",
+      code: true
+    },
+
+    {
+      id: "gruene-ueberschrift-gesamt-code-ueberleitung",
+      message: "👨💻 Insgesamt sieht mein Code jetzt so aus:",
+      trigger: "gruene-ueberschrift-gesamt-code"
+    },
+
+    {
+      id: "gruene-ueberschrift-gesamt-code",
+      message: `<body><h1 style="color=green;">Das ist die Homepage von <Botname></h1></body>`,
+      trigger: "andere-farben",
+      code: true
+    },
+
+    {
+      id: "andere-farben",
+      message: "Hinter color= kannst du verschiedene Farben auf Englisch eintragen. Vergiss das Istgleichzeichen nicht!",
+      trigger:  "fabe-definieren"
+    },
+
+    {
+      id: "fabe-definieren",
+      message: "Wie würde ich denn die Überschrift rot machen?",
+      trigger: "select-rote-schrift"
+    },
+
+    {
+      id: "select-rote-schrift",
+      options: [
+        { value: 1, label: '<h1 style="color=red;">', trigger: 'farbe-waehlen' },
+        { value: 2, label: '<h1 style="Farbe=rot;">', trigger: 'fehler-farbige-ueberschrift' },
+        { value: 3, label: '<h1 style="color=blue;">', trigger: 'fehler-farbige-ueberschrift' },
+      ]
+    },
+
+    {
+      id: "fehler-farbige-ueberschrift",
+      message: "Ups, das war leider falsch! Versuche es nochmal!",
+      trigger: "select-rote-schrift"
+    },
+
+    {
+      id: "farbe-waehlen",
+      message: "Welche Farbe soll deine Überschrift haben?",
+      trigger: "select-farbe-ueberschrift"
+    },
+
+    {
+      id: "select-farbe-ueberschrift",
+      options: [
+        { value: 1, label: 'rot', trigger: 'farbige-ueberschrift-super' },
+        { value: 2, label: 'gelb', trigger: 'farbige-ueberschrift-super' },
+        { value: 3, label: 'blau', trigger: 'farbige-ueberschrift-super' },
+      ]
+      /*
+       *hier dann die gewählte Farbe in den Code rein schreiben
+      außerdem sollte hier dann noch in den Code der Text aus der Überschrift rein von oben und alle closing tags
+      */
+    },
+
+    {
+      id: "farbige-ueberschrift-super",
+      message: "Das sieht ja schon richtig cool aus!",
+      trigger: "inhalt-erstellen"
+    },
+
+    {
+      id: "inhalt-erstellen",
+      message: "Jetzt wollen wir aber noch die Webseite mit Inhalt füllen. Bis jetzt haben wir ja bloß die Überschrift.",
+      trigger: "inhalt-schildkroete"
+    },
+
+    {
+      id: "inhalt-schildkroete",
+      message: "Dafür schreiben wir das hinter die Überschrift. Auf meiner Webseite über Schildkröten sah das damals so aus:",
+      trigger: "inhalt-schildkroete"
+    },
+
+    {
+      id: "inhalt-schildkroete",
+      code: true,
+      message: `<body>
+<h1 style="color=green;">Mein Lieblingstier: Die Schildkröte</h1>
+
+Es gibt auf der ganzen Welt derzeit 341 verscheidene Schildkrötenarten.
+Es gibt Landschildkrötenarten und kleine Wasserschildkröten und auch große
+Fluss-Schildkröten in Südamerika und sogar Riesenschildkröten.
+
+</body>`,
+      trigger: "inhalt-selbst-schreiben"
+    },
 
 
+    {
+      id: "inhalt-selbst-schreiben",
+      message: "Jetzt kanns du deinen Inhalt passend zu deinem Titel schreiben.",
+      trigger: "enter-inhalt"
+    },
 
+    /*
+     * Hier muss dann nochmal der Code von vorher eingefügt werden, damit der User nur noch seinen Text eingeben muss
+    */
+
+    {
+      id: "enter-inhalt",
+      user: true,
+      trigger: "hp-fertig"
+    },
+
+    {
+      id: "hp-fertig",
+      message: "Und schon ist deine erste eigene Homepage fertig! 😲👏",
+      trigger: "finaler-link"
+    },
+
+    {
+      id: "finaler-link",
+      message: "Schau gleich hier: ",
+
+      /*
+       * hier muss dann noch der link eingefügt werden
+       */
+      end: true
+    },
 
   ];
 
