@@ -9,6 +9,7 @@ import { getXMLErrors, parseXML, getXMLBody } from './getXMLErrors';
 import { WebsitePreview } from './WebsitePreview';
 import { codeFromState } from './state/code';
 import { ChatBotState } from './state';
+import { ThemeProvider } from 'styled-components';
 
 type TriggerProps = { value: string; steps?: any };
 
@@ -812,9 +813,17 @@ export function ProgrammingChatBot() {
     },
   ];
 
-  if (height <= 750) {
-    return <ChatBot width="100%" steps={steps} floating={true} opened={true} />;
-  }
+  const theme = {
+    background: '#f5f8fb',
+    fontFamily: 'Helvetica Neue',
+    headerBgColor: '#EF6C00',
+    headerFontColor: '#fff',
+    headerFontSize: '15px',
+    botBubbleColor: '#EF6C00',
+    botFontColor: '#fff',
+    userBubbleColor: '#fff',
+    userFontColor: '#4a4a4a',
+  };
 
   const header = (
     <div
@@ -829,6 +838,21 @@ export function ProgrammingChatBot() {
       Saphira
     </div>
   );
+
+  if (height <= 750) {
+    return (
+      <ThemeProvider theme={theme}>
+        <ChatBot
+          width="100%"
+          steps={steps}
+          floating={true}
+          opened={true}
+          headerComponent={header}
+          enableMobileAutoFocus={true}
+        />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <div
@@ -851,17 +875,14 @@ export function ProgrammingChatBot() {
       >
         <div style={{ flex: 1 }} />
         <div>
-          <ChatBot
-            headerTitle="Saphira"
-            botAvatar={require('./avatar.png')}
-            steps={steps}
-            bubbleStyle={{ backgroundColor: '#5d9be8' }} // style für Sprechblasen
-            bubbleOptionStyle={{}} // Style für Auswahloptionen
-            inputStyle={{}} // Style für die Eingabe
-            speechSynthesis={{ enable: false }}
-            enableMobileAutoFocus={true}
-            headerComponent={header}
-          />
+          <ThemeProvider theme={theme}>
+            <ChatBot
+              headerTitle="Saphira"
+              botAvatar={require('./avatar.png')}
+              steps={steps}
+              headerComponent={header}
+            />
+          </ThemeProvider>
         </div>
         <div style={{ flex: 1 }} />
       </div>
