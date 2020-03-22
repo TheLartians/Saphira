@@ -839,18 +839,18 @@ export function ProgrammingChatBot() {
     </div>
   );
 
+  const chatBotProps = {
+    headerTitle: 'Saphira',
+    botAvatar: require('./avatar.png'),
+    steps: steps,
+    headerComponent: header,
+    bubbleOptionStyle: { backgroundColor: '#BEEBFF', color: 'black' },
+  };
+
   if (height <= 750) {
     return (
       <ThemeProvider theme={theme}>
-        <ChatBot
-          width="100%"
-          steps={steps}
-          floating={true}
-          opened={true}
-          headerComponent={header}
-          enableMobileAutoFocus={true}
-          bubbleOptionStyle={{ backgroundColor: '#BEEBFF', color: 'black' }}
-        />
+        <ChatBot width="100%" floating={true} opened={true} {...chatBotProps} />
       </ThemeProvider>
     );
   }
@@ -877,13 +877,7 @@ export function ProgrammingChatBot() {
         <div style={{ flex: 1 }} />
         <div>
           <ThemeProvider theme={theme}>
-            <ChatBot
-              headerTitle="Saphira"
-              botAvatar={require('./avatar.png')}
-              steps={steps}
-              headerComponent={header}
-              bubbleOptionStyle={{ backgroundColor: '#BEEBFF', color: 'black' }}
-            />
+            <ChatBot {...chatBotProps} />
           </ThemeProvider>
         </div>
         <div style={{ flex: 1 }} />
