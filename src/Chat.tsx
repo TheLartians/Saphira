@@ -849,8 +849,7 @@ export function ProgrammingChatBot() {
           opened={true}
           headerComponent={header}
           enableMobileAutoFocus={true}
-          bubbleOptionStyle = {{backgroundColor: '#BEEBFF', color: 'black'}}
-
+          bubbleOptionStyle={{ backgroundColor: '#BEEBFF', color: 'black' }}
         />
       </ThemeProvider>
     );
@@ -883,7 +882,7 @@ export function ProgrammingChatBot() {
               botAvatar={require('./avatar.png')}
               steps={steps}
               headerComponent={header}
-              bubbleOptionStyle = {{backgroundColor: '#BEEBFF', color: 'black'}}
+              bubbleOptionStyle={{ backgroundColor: '#BEEBFF', color: 'black' }}
             />
           </ThemeProvider>
         </div>
