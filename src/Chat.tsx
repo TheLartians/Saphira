@@ -601,7 +601,7 @@ export function ProgrammingChatBot() {
       id: 'gruene-ueberschrift-gesamt-code',
       component: (
         <CodeBlock
-          content={`<CodeBlock content={<body><h1 style="color=green;">Mein Lieblingstier: Die Schildkröte<Botname></h1></body>}/>`}
+          content={`<body><h1 style="color=green;">Mein Lieblingstier: Die Schildkröte<Botname></h1></body>`}
         />
       ),
       asMessage: true,
