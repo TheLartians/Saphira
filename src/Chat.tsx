@@ -855,7 +855,11 @@ export function ProgrammingChatBot() {
             headerTitle="Saphira"
             botAvatar={require('./avatar.png')}
             steps={steps}
-            bubbleStyle={{ backgroundColor: '#5d9be8' }}
+            bubbleStyle={{ backgroundColor: '#5d9be8' }} // style für Sprechblasen
+            bubbleOptionStyle={{}} // Style für Auswahloptionen
+            inputStyle={{}} // Style für die Eingabe
+            speechSynthesis={{ enable: false }}
+            enableMobileAutoFocus={true}
             headerComponent={header}
           />
         </div>
