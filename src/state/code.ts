@@ -1,8 +1,6 @@
 import { ChatBotAction } from './action';
 
-const defaultProfileState = {
-  code: undefined as undefined | string,
-};
+const defaultProfileState = undefined as undefined | string;
 
 export function codeReducer(
   state = defaultProfileState,
@@ -10,8 +8,8 @@ export function codeReducer(
 ) {
   switch (action.type) {
     case 'setCode':
-      state = { ...state, code: action.value };
+      state = action.value;
       break;
   }
-  return state;
+  return state || null;
 }

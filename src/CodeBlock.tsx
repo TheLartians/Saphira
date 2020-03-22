@@ -3,31 +3,52 @@ import { useSelector } from 'react-redux';
 import { ChatBotState } from './state';
 
 export const CodeBlock = () => {
-  const code = useSelector<ChatBotState>((state) => state.code);
+  const code = useSelector<ChatBotState>((state: ChatBotState) => state.code);
 
   return (
     <div
       style={{
-        backgroundColor: 'gray',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
+        fontFamily: 'Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace',
+        backgroundColor: '#4d0000',
+        padding: 10,
+        borderRadius: 5,
       }}
     >
-      Code
+      <HeaderBar />
+      {code || `<NO CODE>`}
     </div>
   )
 }
 
-// export Profile() {
-//   const name = useSelector<ChatBotState>((state) => state.profile.name);
-//   const age = useSelector<ChatBotState>((state) => state.profile.age);
-//   const url = useSelector<ChatBotState>((state) => state.profile.url);
-//   return (
-//     <p style={{ color: 'black' }}>
-//       <b>Name:</b> {name || 'Unbekannt'} <br />
-//       <b>Alter:</b> {age || 'Unbekannt'} <br />
-//       <b>Deine seite:</b> {url ? <a href={url as string}>link</a> : 'Keine'}
-//     </p>
-//   );
-// }
+const Circle = (props: { color: string }) => (
+  <div
+          style={{
+            width: 10,
+            height: 10,
+            backgroundColor: props.color,
+            borderRadius: 50,
+            marginRight: 5,
+          }}
+        />
+);
+
+const HeaderBar = () => (
+  <>
+    <div
+      style={{
+        paddingBottom: 10,
+        display: 'flex',
+        justifyContent: 'flex-start'
+      }}
+    >
+      <Circle color="red" />
+      <Circle color="yellow" />
+      <Circle color="lightgreen" />
+    </div>
+    <div style={{
+      borderBottom: '0.5px solid grey',
+      marginBottom: 10,
+    }}>
+    </div>
+  </>
+);
