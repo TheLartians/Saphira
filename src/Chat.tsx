@@ -815,20 +815,20 @@ export function ProgrammingChatBot() {
 
   const theme = {
     background: '#f5f8fb',
-    fontFamily: 'Helvetica Neue',
-    headerBgColor: '#EF6C00',
+    fontFamily: 'Verdana',
+    headerBgColor: '#1F8ACF',
     headerFontColor: '#fff',
     headerFontSize: '15px',
-    botBubbleColor: '#EF6C00',
+    botBubbleColor: '#1F8ACF',
     botFontColor: '#fff',
-    userBubbleColor: '#fff',
+    userBubbleColor: '#BEEBFF',
     userFontColor: '#4a4a4a',
   };
 
   const header = (
     <div
       style={{
-        backgroundColor: '#2463b3',
+        backgroundColor: '#1F8ACF',
         padding: 14,
         color: 'white',
         fontWeight: 'bold',
@@ -849,6 +849,8 @@ export function ProgrammingChatBot() {
           opened={true}
           headerComponent={header}
           enableMobileAutoFocus={true}
+          bubbleOptionStyle = {{backgroundColor: '#BEEBFF', color: 'black'}}
+
         />
       </ThemeProvider>
     );
@@ -881,6 +883,7 @@ export function ProgrammingChatBot() {
               botAvatar={require('./avatar.png')}
               steps={steps}
               headerComponent={header}
+              bubbleOptionStyle = {{backgroundColor: '#BEEBFF', color: 'black'}}
             />
           </ThemeProvider>
         </div>
