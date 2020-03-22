@@ -1,16 +1,16 @@
 import React, { Dispatch, useState } from 'react';
 import ChatBot from 'react-simple-chatbot';
-import { MessageArgs } from './chatbot-types';
-import { getUrlVars, createWebsiteURLWithData } from './urlArgs';
+import { MessageArgs, TriggerArgs } from './chatbot-types';
+import { createWebsiteURLWithData } from './urlArgs';
 import { useDispatch } from 'react-redux';
 import { ChatBotAction } from './state/action';
 import { Profile } from './Profile';
 import { CodeBlock } from './CodeBlock';
+import { getXMLErrors } from './getXMLErrors';
 
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
   const [height, setHeight] = useState(window.innerHeight);
-
   React.useEffect(() => {
     function updateHeight() {
       setHeight(window.innerHeight);
@@ -144,7 +144,27 @@ export function ProgrammingChatBot() {
     {
       id: 'enter-code',
       user: true,
-      trigger: 'set-code',
+      trigger: (args: TriggerArgs) => {
+        const errors = getXMLErrors(args.value);
+        if (errors) {
+          return 'show-code-errors';
+        } else {
+          return 'set-code';
+        }
+      },
+    },
+    {
+      id: 'show-code-errors',
+      message: 'Da ist wohl was schief gegangen:',
+      trigger: 'present-code-errors',
+    },
+    {
+      id: 'present-code-errors',
+      component: React.createElement((args: MessageArgs) => {
+        const errors = getXMLErrors(args.previousValue);
+        return <div>{errors}</div>;
+      }),
+      trigger: 'update-code',
     },
     {
       id: 'set-code',
@@ -157,7 +177,7 @@ export function ProgrammingChatBot() {
     {
       id: 'show-code-block',
       asMessage: true,
-      component: <CodeBlock content={`<tag>`} />,
+      component: <CodeBlock />,
       trigger: 'profile',
     },
   ];
