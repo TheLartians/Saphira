@@ -24,9 +24,11 @@ function LinkToWebsite() {
 export function ProgrammingChatBot() {
   const dispatch = useDispatch<Dispatch<ChatBotAction>>();
   const [height, setHeight] = useState(window.innerHeight);
+  const [width, setWidth] = useState(window.innerWidth);
   React.useEffect(() => {
     function updateHeight() {
       setHeight(window.innerHeight);
+      setWidth(window.innerWidth);
     }
     window.addEventListener('resize', updateHeight);
     return () => window.removeEventListener('resize', updateHeight);
@@ -847,7 +849,7 @@ export function ProgrammingChatBot() {
     bubbleOptionStyle: { backgroundColor: '#BEEBFF', color: 'black' },
   };
 
-  if (height <= 750) {
+  if (height <= 750 && width <= 600) {
     return (
       <ThemeProvider theme={theme}>
         <ChatBot width="100%" floating={true} opened={true} {...chatBotProps} />
